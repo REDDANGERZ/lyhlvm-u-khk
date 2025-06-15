@@ -1,0 +1,119 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class Player : MonoBehaviour
+{
+    public Joystick joystick; // Mobile joystick
+    public float speed = 5f;
+    public float jumpForce = 5f;
+
+    private Rigidbody2D rb;
+    private Animator anim;
+    private bool isGrounded = false;
+    private bool facingRight = true;
+    private float move;
+
+    public GameObject built; // Object to instantiate
+    public Transform HEY; // Position to instantiate the object
+
+    public int maxHealth = 3;
+    public int currentHealth;
+    public int damage = 1;
+
+    public cm Cm; // Reference to your coin manager script
+    private sfxmusic sfxMusic; // Sound system script (with coin, death SFX)
+
+    private void Awake()
+    {
+        sfxMusic = GameObject.FindGameObjectWithTag("audio").GetComponent<sfxmusic>();
+    }
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        currentHealth = maxHealth;
+    }
+
+    void Update()
+    {
+        // Joystick + keyboard fallback
+        float input = joystick.Horizontal;
+        if (Mathf.Abs(input) < 0.1f)
+        {
+            input = Input.GetAxisRaw("Horizontal"); // For testing in Editor
+        }
+
+        move = input * speed;
+
+        // Flip sprite based on movement direction
+        if (move > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if (move < 0 && facingRight)
+        {
+            Flip();
+        }
+
+        // Set running animation
+        anim.SetBool("isRunning", move != 0);
+
+        // Jump
+        if ((joystick.Vertical > 0.5f || Input.GetKeyDown(KeyCode.Space)) && isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            isGrounded = false;
+            anim.SetTrigger("Jump");
+        }
+
+        // Death check
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Player is dead!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2(move, rb.linearVelocity.y);
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        transform.localEulerAngles = new Vector3(0, facingRight ? 0 : 180, 0);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+
+        if (collision.collider.CompareTag("enmy"))
+        {
+            currentHealth--;
+            sfxMusic.PlaySFX(sfxMusic.death);
+            Debug.Log("Collided with enemy! Health: " + currentHealth);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Coin"))
+        {
+            Cm.coinCount++;
+            Destroy(other.gameObject);
+            sfxMusic.PlaySFX(sfxMusic.coin);
+        }
+    }
+
+    public void poo()
+    {
+        Instantiate(built, HEY.position, HEY.rotation);
+        Debug.Log("Build action triggered!");
+    }
+}
