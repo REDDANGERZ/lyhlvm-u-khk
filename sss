@@ -1,0 +1,28 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class ssssssssssssss : MonoBehaviour
+{
+    sfxmusic sfxMusic; // Reference to the sfxmusic script for playing sound effects
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        sfxMusic = GameObject.FindGameObjectWithTag("audio").GetComponent<sfxmusic>(); // Get the sfxmusic component from the GameObject with the tag "sfxmusic"
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+
+        {
+           
+            SceneManager.LoadSceneAsync(2);
+          
+        }
+    }
+}
