@@ -1,0 +1,41 @@
+using UnityEngine;
+
+public class sfxmusic : MonoBehaviour
+{
+    [Header("Audio Sources")] // Header for the audio sources in the inspector
+    [SerializeField] private AudioSource music;// Array to hold sound effects clips
+    [SerializeField] private AudioSource sfx;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Audio Clips")] // Header for the audio clips in the inspector
+    
+    public AudioClip death;
+    public AudioClip s1;
+    public AudioClip menuback;
+    public AudioClip win;
+    public AudioClip startbutton;
+    public AudioClip agbutton;
+    public AudioClip ag;
+    public AudioClip quit1;
+    public AudioClip quit2;
+    public AudioClip coin;
+    public AudioClip start;
+    public AudioClip winner;
+    
+    void Start()
+    {
+        sfx.clip = s1; // Assign the first sound effect clip to the AudioSource
+        sfx.Play(); // Start playing the background music
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+      sfx.loop = false; // Ensure the sound effect loops continuously
+    }
+    public void PlaySFX(AudioClip clip)
+    {
+        sfx.PlayOneShot (clip); // Assign the specified sound effect clip to the AudioSource
+        
+    }
+}
