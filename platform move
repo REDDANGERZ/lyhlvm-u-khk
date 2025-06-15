@@ -1,0 +1,43 @@
+using UnityEngine;
+
+public class PlatformMover : MonoBehaviour
+{
+    // Reference to the start and end points in the scene (Empty GameObjects)
+    public GameObject startPointObject;
+    public GameObject endPointObject;
+
+    // Speed of the platform movement
+    public float speed = 2f;
+
+    // Direction of movement (1 for moving towards end, -1 for moving towards start)
+    private int direction = 1;
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Ensure start and end points are assigned
+        if (startPointObject == null || endPointObject == null)
+        {
+            Debug.LogError("Start or End point not assigned!");
+            return;
+        }
+
+        // Get the positions of the start and end points from the scene
+        Vector3 startPoint = startPointObject.transform.position;
+        Vector3 endPoint = endPointObject.transform.position;
+
+        // Move the platform towards the target point
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, direction == 1 ? endPoint : startPoint, step);
+
+        // If we reached the target, reverse direction
+        if (transform.position == endPoint)
+        {
+            direction = -1;
+        }
+        else if (transform.position == startPoint)
+        {
+            direction = 1;
+        }
+    }
+}
