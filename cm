@@ -1,0 +1,30 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class cm : MonoBehaviour
+{
+     
+    public int coinCount;
+    public Text coinText; 
+    public GameObject door;
+    sfxmusic sfxMusic; // Reference to the sfxmusic script for playing sound effects
+ 
+    void Start()
+    {
+        sfxMusic = GameObject.FindGameObjectWithTag("audio").GetComponent<sfxmusic>(); // Get the sfxmusic component from the GameObject with the tag "sfxmusic"
+    }
+
+    
+    void Update()
+    {
+        coinText.text = coinCount.ToString();
+        if (coinCount >= 5)
+        {
+            Destroy(door); // Disable the door GameObject when coinCount is 4 or more
+            sfxMusic.PlaySFX(sfxMusic.win); // Play the winner sound effect
+            // Stop the background music
+
+        }
+       
+    }
+}
