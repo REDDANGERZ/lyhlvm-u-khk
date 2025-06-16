@@ -1,0 +1,37 @@
+using UnityEngine;
+using UnityEngine.SceneMangement;
+public class Scene:Monoh
+{
+public void one()
+{
+SceneManger.loadsceneAsync(1);
+}
+public void zero()
+{
+SceneManger.loadsceneAsync(0);
+}
+public void two()
+{
+SceneManger.loadsceneAsync(2);
+}
+public void three()
+{
+SceneManger.loadsceneAsync(3);
+}
+public void four()
+{
+SceneManger.loadsceneAsync(4);
+}
+public void five()
+{
+SceneManger.loadsceneAsync(5);
+}
+public void six()
+{
+SceneManger.loadsceneAsync(6);
+}
+public void exit()
+{
+Application.Quit(); 
+}
+}
